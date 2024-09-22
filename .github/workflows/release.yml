@@ -27,6 +27,7 @@ jobs:
   release:
     uses: jd-apprentice/jd-workflows/.github/workflows/cliff.yml@main
     if: github.ref == 'refs/heads/master'
+    needs: build
     with:
       binary_name: mks
       binary_path: ./target/release
