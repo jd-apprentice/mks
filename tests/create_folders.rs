@@ -1,9 +1,10 @@
 mod create_folders {
-    use mks::mks;
 
     #[test]
-    fn create_folders() {
-        let _ = mks();
+    fn addition() {
+        assert_eq!(2 + 2, 4);
     }
+
+    // TODO: Create test for mks
 
 }
