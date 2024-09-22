@@ -12,28 +12,26 @@ permissions:
 
 jobs:
 
-  build:
+  publish:
+    name: Publish
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Build
-        run: cargo build --release
-      - name: Upload binary
-        uses: actions/upload-artifact@v3
+      - uses: actions/checkout@v4
         with:
-          name: mks
-          path: target/release/mks
-    
-  release:
-    uses: jd-apprentice/jd-workflows/.github/workflows/cliff.yml@main
-    if: github.ref == 'refs/heads/master'
-    needs: build
-    with:
-      binary_name: mks
-      binary_path: ./target/release
-      file_path: ./target/release/mks
-      name: "generate a changelog"
-      runs_on: ubuntu-latest
-      cliff_args: "-vv --latest --strip header"
-    secrets:
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Generate a Changelog
+        uses: orhun/git-cliff-action@v3
+        id: git-cliff
+        with:
+          args: -vv --latest
+        env:
+          OUTPUT: CHANGES.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: ${{ contains(github.ref_name, 'a') }}
+          body: ${{ steps.git-cliff.outputs.content }}
