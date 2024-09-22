@@ -2,11 +2,11 @@ version: 2
 updates:
 
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/docker"
     schedule:
       interval: "monthly"
 
   - package-ecosystem: "cargo"
-    directory: "/backend"
+    directory: "/"
     schedule:
       interval: "monthly"
