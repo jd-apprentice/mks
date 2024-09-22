@@ -12,10 +12,11 @@ permissions:
 
 jobs:
   release:
-    uses: jd-apprentice/jd-workflows/.github/workflows/release.yml@main
+    uses: jd-apprentice/jd-workflows/.github/workflows/cliff.yml@main
     if: github.ref == 'refs/heads/master'
     with:
-      name: release
+      name: "generate a changelog"
       runs_on: ubuntu-latest
+      cliff_args: "-vv --latest --strip header"
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
