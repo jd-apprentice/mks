@@ -1,0 +1,13 @@
+services:
+  mks:
+    image: mks
+    security_opt:
+      - apparmor:./docker/non-root-apparmor.profile
+      - no-new-privileges:true
+    cap_drop: ["ALL"]
+    networks:
+      - mks
+
+networks:
+  mks:
+    driver: bridge
