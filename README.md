@@ -1,5 +1,6 @@
 # MKS
 
+```
 ███▄ ▄███▓ ██ ▄█▀  ██████ 
 ▓██▒▀█▀ ██▒ ██▄█▒ ▒██    ▒ 
 ▓██    ▓██░▓███▄░ ░ ▓██▄   
@@ -9,6 +10,7 @@
 ░  ░      ░░ ░▒ ▒░░ ░▒  ░ ░
 ░      ░   ░ ░░ ░ ░  ░  ░  
     ░   ░  ░         ░
+```
 
 Project mks created with [Liquid](https://github.com/liquid-rs/liquid)
 
