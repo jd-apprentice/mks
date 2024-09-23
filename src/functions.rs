@@ -1,31 +1,39 @@
-use std::env::args;
 use std::fs::{self, File};
 use std::io;
 use std::env::set_current_dir;
 use std::path::Path;
+use std::env;
 use crate::{FOLDERS_TO_CREATE, FILE_TO_CREATE, LOGO};
 
-fn make_dir(path: &str) -> io::Result<()> {
-    fs::create_dir(path).inspect(|_| println!("Created folder: {path}"))
+pub fn load_sentry() {
+    dotenvy::dotenv().expect("Failed to load .env file");
+
+    let sentry_dns = env::var("SENTRY_DSN").unwrap();
+
+    let _guard = sentry::init((sentry_dns, sentry::ClientOptions {
+        release: sentry::release_name!(),
+        ..Default::default()
+    }));
 }
 
-fn get_folder_name() -> Result<String, &'static str> {
-    args().skip(1).next().ok_or_else(|| {
-        println!("Usage: mks <folder_name>");
-        "Missing folder name"
-    })
+pub fn make_dir(path: &str) -> io::Result<()> {
+    fs::create_dir(path).inspect(|_| println!("Created folder: {path}"))
 }
 
 fn about(logo: &str) {
     println!("{logo}");
-    println!("\nSkaffolding utility to create a simple structure for htb machines.\n");
+    println!("\nSkaffolding utility to create folder structures for different purposes.\n");
 }
  
-pub fn mks() -> io::Result<()> {
+pub fn mks(folder_name: Result<String, &'static str>) -> io::Result<()> {
     about(LOGO);
 
-    let Ok(folder_name) = get_folder_name() else {
-        return Ok(());
+    let folder_name = match folder_name {
+        Ok(folder_name) => folder_name,
+        Err(_) => {
+            println!("Usage: mks <folder_name>");
+            return Ok(())
+        }
     };
 
     make_dir(&folder_name)?;

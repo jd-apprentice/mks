@@ -1,21 +1,18 @@
-use dotenv::dotenv;
-use std::env::{self};
-use std::io;
-use mks::mks;
+use std::env::args;
+use mks::{mks, load_sentry};
 
-fn main() -> io::Result<()> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-    dotenv().ok();
+    load_sentry();
 
-    let sentry_dns = env::var("SENTRY_DSN").unwrap();
+    let argument = args().nth(1).ok_or_else(||{
+        println!("Usage: mks <folder_name>");
+        "Missing Folder Name"
+    });
 
-    let _guard = sentry::init((sentry_dns, sentry::ClientOptions {
-        release: sentry::release_name!(),
-        ..Default::default()
-    }));
-
-    mks()
+    mks(argument)?;
     
+    Ok(())
 }
 
 

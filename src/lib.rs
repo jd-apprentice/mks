@@ -1,5 +1,5 @@
 mod functions;
-pub use functions::mks;
+pub use functions::{mks, make_dir, load_sentry};
 
 const FOLDERS_TO_CREATE: [&str; 4] = ["nmap", "content", "exploits", "scripts"];
 const FILE_TO_CREATE: &str = "README.md";
