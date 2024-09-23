@@ -9,6 +9,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "Missing Folder Name"
     });
 
-    mks(argument)?;
+    mks(argument);
     Ok(())
 }

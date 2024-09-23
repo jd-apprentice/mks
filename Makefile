@@ -26,4 +26,7 @@ lint:
 format:
 	cargo fmt --all --check
 
+format-fix:
+	cargo fmt --all
+
 .PHONY: build docker test lint format compose
