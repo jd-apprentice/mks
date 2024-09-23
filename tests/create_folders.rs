@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod create_folders {
 
-    use std::path::Path;
     use mks::make_dir;
+    use std::path::Path;
 
     #[test]
     fn make_dir_fn() {
@@ -10,5 +10,4 @@ mod create_folders {
         let _ = make_dir(PATH_TO_CREATE);
         assert!(Path::new(PATH_TO_CREATE).exists());
     }
-
 }
