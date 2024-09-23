@@ -3,10 +3,15 @@ use std::fs::{self, File};
 use std::io;
 use std::path::Path;
 
+/// # Panics
+/// Will panic if `SENTRY_DSN` is not set in the .env file
+
 pub fn load_sentry() {
     dotenvy::dotenv().expect("Failed to load .env file");
 
-    let sentry_dns = env::var("SENTRY_DSN").unwrap();
+    let sentry_dns = env::var("SENTRY_DSN").unwrap_or_else(|_| {
+        panic!("Missing SENTRY_DSN environment variable");
+    });
 
     let _guard = sentry::init((
         sentry_dns,
@@ -17,8 +22,11 @@ pub fn load_sentry() {
     ));
 }
 
+/// # Errors
+/// Will return an error if the folder cannot be created
+
 pub fn make_dir(path: &str) -> io::Result<()> {
-    fs::create_dir(path).inspect(|_| println!("Created folder: {path}"))
+    fs::create_dir(path).inspect(|()| println!("Created folder: {path}"))
 }
 
 fn about(logo: &str) {
@@ -29,12 +37,9 @@ fn about(logo: &str) {
 pub fn mks(folder_name: Result<String, &'static str>) {
     about(crate::LOGO);
 
-    let folder_name = match folder_name {
-        Ok(folder_name) => folder_name,
-        Err(_) => {
-            println!("Usage: mks <folder_name>");
-            return;
-        }
+    let Ok(folder_name) = folder_name else {
+        println!("Usage: mks <folder_name>");
+        return;
     };
 
     let _ = make_dir(&folder_name);

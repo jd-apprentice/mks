@@ -1,7 +1,7 @@
 use mks::{load_sentry, mks};
 use std::env::args;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() {
     load_sentry();
 
     let argument = args().nth(1).ok_or_else(|| {
@@ -10,5 +10,4 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
 
     mks(argument);
-    Ok(())
 }

@@ -21,7 +21,7 @@ test:
 	cargo test
 
 lint:
-	cargo clippy -- -D warnings
+	cargo clippy -- -D clippy::pedantic
  
 format:
 	cargo fmt --all --check
