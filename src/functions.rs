@@ -44,8 +44,7 @@ pub fn mks(folder_name: Result<String, &'static str>) {
 
     let _new_file = File::create(crate::FILE_TO_CREATE);
 
-    #[allow(clippy::redundant_closure)]
     let _ = crate::FOLDERS_TO_CREATE
         .into_iter()
-        .try_for_each(|folder| make_dir(folder));
+        .try_for_each(make_dir);
 }
