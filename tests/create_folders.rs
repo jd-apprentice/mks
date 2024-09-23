@@ -1,10 +1,14 @@
+#[cfg(test)]
 mod create_folders {
 
-    #[test]
-    fn addition() {
-        assert_eq!(2 + 2, 4);
-    }
+    use std::path::Path;
+    use mks::make_dir;
 
-    // TODO: Create test for mks
+    #[test]
+    fn make_dir_fn() {
+        const PATH_TO_CREATE: &str = "content";
+        let _ = make_dir(PATH_TO_CREATE);
+        assert!(Path::new(PATH_TO_CREATE).exists());
+    }
 
 }
