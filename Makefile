@@ -1,4 +1,9 @@
+folder_name ?= sample
+
 all: test lint format docker compose
+
+start:
+	./target/release/mks $(folder_name)
 
 dev:
 	cargo watch -x run
