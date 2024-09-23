@@ -11,27 +11,12 @@ permissions:
   contents: write
 
 jobs:
-
-  publish:
-    name: Publish
-    if: github.ref == 'refs/tags/**'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Generate a Changelog
-        uses: orhun/git-cliff-action@v3
-        id: git-cliff
-        with:
-          args: -vv --latest
-        env:
-          OUTPUT: CHANGES.md
-          GITHUB_REPO: ${{ github.repository }}
-
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          prerelease: ${{ contains(github.ref_name, 'a') }}
-          body: ${{ steps.git-cliff.outputs.content }}
+  release:
+    uses: jd-apprentice/jd-workflows/.github/workflows/release.yml@main
+    if: github.ref == 'refs/heads/master'
+    with:
+      name: release
+      runs_on: ubuntu-latest
+      release_notes: true
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
