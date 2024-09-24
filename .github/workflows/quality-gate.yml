@@ -17,5 +17,5 @@ jobs:
     with:
       runs-on: ubuntu-latest
       checks-command: "--all --check"
-      clippy-command: "-- -D warnings"
+      clippy-command: "--all-targets --all-features"
       tests-command: "test"
