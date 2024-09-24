@@ -6,10 +6,21 @@ repository = "https://github.com/jd-apprentice/mks"
 version = "0.2.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
+categories = ["command-line-utilities"]
+keywords = ["cli", "make", "folder", "structure"]
 
 [dependencies]
 dotenvy = "0.15.7"
+log = "0.4.22"
 sentry = "0.34.0"
 
 [dev-dependencies]
 cargo-llvm-cov = "0.6.13"
+mockall = "0.13.0"
+windows-sys = "0.59.0"
+
+[lints.clippy]
+panic = "allow"
+missing_docs_in_private_items = "allow"
+implicit_return = "allow"
+restriction = { level = "warn", priority = -1 }
