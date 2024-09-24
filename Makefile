@@ -1,9 +1,10 @@
 folder_name ?= sample
+folder_type ?= --hacking
 
 all: test lint format docker compose
 
 start:
-	./target/release/mks $(folder_name)
+	./target/release/mks $(folder_name) $(folder_type)
 
 dev:
 	cargo watch -x run
@@ -21,7 +22,10 @@ test:
 	cargo test
 
 lint:
-	cargo clippy -- -D clippy::pedantic
+	cargo clippy --all-targets --all-features
+
+lint-fix:
+	cargo clippy --all-targets --all-features --fix --allow-dirty
  
 format:
 	cargo fmt --all --check
