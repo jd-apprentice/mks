@@ -1,13 +1,17 @@
+use log::info;
 use std::env::{self, set_current_dir};
-use std::fs::{self, File};
+use std::fs::{File, create_dir_all};
 use std::io;
 use std::path::Path;
+use crate::{FolderName, FolderType};
 
 /// # Panics
 /// Will panic if `SENTRY_DSN` is not set in the .env file
-
+#[inline]
 pub fn load_sentry() {
-    dotenvy::dotenv().expect("Failed to load .env file");
+    dotenvy::dotenv().unwrap_or_else(|_| {
+        panic!("Missing .env file");
+    });
 
     let sentry_dns = env::var("SENTRY_DSN").unwrap_or_else(|_| {
         panic!("Missing SENTRY_DSN environment variable");
@@ -24,30 +28,44 @@ pub fn load_sentry() {
 
 /// # Errors
 /// Will return an error if the folder cannot be created
-
+#[inline]
 pub fn make_dir(path: &str) -> io::Result<()> {
-    fs::create_dir(path).inspect(|()| println!("Created folder: {path}"))
+    create_dir_all(path).inspect(|()| info!("Created folder: {path}"))
 }
 
-fn about(logo: &str) {
-    println!("{logo}");
-    println!("\nSkaffolding utility to create folder structures for different purposes.\n");
-}
+/// # Panics
+/// Will panic if `folder_name` or `folder_type` is not set
+#[inline]
+pub fn mks(folder_name: FolderName, folder_type: FolderType) {
+    info!("{}", crate::LOGO);
+    info!("\nSkaffolding utility to create folder structures for different purposes.\n");
 
-pub fn mks(folder_name: Result<String, &'static str>) {
-    about(crate::LOGO);
-
-    let Ok(folder_name) = folder_name else {
-        println!("Usage: mks <folder_name>");
-        return;
+    let Ok(f_name) = folder_name else {
+        info!("{}", crate::USAGE_MESSAGE);
+        panic!("Missing Folder Name");
     };
 
-    let _ = make_dir(&folder_name);
+    _ = make_dir(&f_name);
 
-    let new_dir_path = Path::new(&folder_name);
-    let _ = set_current_dir(new_dir_path);
+    let new_dir_path = Path::new(&f_name);
+    _ = set_current_dir(new_dir_path);
 
     let _new_file = File::create(crate::FILE_TO_CREATE);
 
-    let _ = crate::FOLDERS_TO_CREATE.into_iter().try_for_each(make_dir);
+    let Ok(f_type) = folder_type else {
+        info!("{}", crate::USAGE_MESSAGE);
+        panic!("Missing Folder Type");
+    };
+
+    match f_type.as_str() {
+        "--hacking" => {
+            _ = crate::FOLDERS.hacking.into_iter().try_for_each(make_dir);
+        }
+        "--study" => {
+            _ = crate::FOLDERS.study.into_iter().try_for_each(make_dir);
+        }
+        _ => {
+            info!("{}", crate::USAGE_MESSAGE);
+        }
+    }
 }
