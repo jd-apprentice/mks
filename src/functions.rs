@@ -1,9 +1,9 @@
+use crate::{FolderName, FolderType};
 use log::info;
 use std::env::{self, set_current_dir};
-use std::fs::{File, create_dir_all};
+use std::fs::{create_dir_all, File};
 use std::io;
 use std::path::Path;
-use crate::{FolderName, FolderType};
 
 /// # Panics
 /// Will panic if `SENTRY_DSN` is not set in the .env file
