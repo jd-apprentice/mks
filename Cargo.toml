@@ -17,7 +17,7 @@ sentry = "0.38.1"
 [dev-dependencies]
 cargo-llvm-cov = "0.6.13"
 mockall = "0.13.0"
-windows-sys = "0.59.0"
+windows-sys = "0.60.2"
 
 [lints.clippy]
 panic = "allow"
